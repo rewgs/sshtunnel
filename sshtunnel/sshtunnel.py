@@ -25,6 +25,7 @@ from binascii import hexlify
 from select import select
 
 import paramiko
+from address import Address
 
 # NOTE: This block is for Python 2 support. Removing.
 #
@@ -65,12 +66,13 @@ _DEPRECATIONS = {
 DEFAULT_LOGLEVEL = logging.ERROR  #: default level if no logger passed (ERROR)
 TRACE_LEVEL = 1
 logging.addLevelName(TRACE_LEVEL, 'TRACE')
-DEFAULT_SSH_DIRECTORY = '~/.ssh'
 
 _StreamServer = socketserver.UnixStreamServer if os.name == 'posix' \
     else socketserver.TCPServer
 
-#: Path of optional ssh configuration file
+# NOTE: These are now fields in the SSH_Config class.
+#
+# Path of optional ssh configuration file
 DEFAULT_SSH_DIRECTORY = '~/.ssh'
 SSH_CONFIG_FILE = os.path.join(DEFAULT_SSH_DIRECTORY, 'config')
 
@@ -230,9 +232,7 @@ def create_logger(logger=None,
 
 
 def _add_handler(logger, handler=None, loglevel=None):
-    """
-    Add a handler to an existing logging.Logger object
-    """
+    """ Add a handler to an existing logging.Logger object """
     handler.setLevel(loglevel or DEFAULT_LOGLEVEL)
     if handler.level <= logging.DEBUG:
         _fmt = '%(asctime)s| %(levelname)-4.3s|%(threadName)10.9s/' \
@@ -498,6 +498,8 @@ class _ThreadingStreamForwardServer(socketserver.ThreadingMixIn,
     daemon_threads = _DAEMON
 
 
+# This appears to be one of the primary classes. 
+# This is huge, so I'll be re-writing it in the tunnel module.
 class SSHTunnelForwarder(object):
     """
     **SSH tunnel class**
@@ -893,9 +895,14 @@ class SSHTunnelForwarder(object):
                 )
             )
 
+    # NOTE: I'm not entirely sure how much of the above is relevant, so I'm starting the re-write (Tunnel) here.
     def __init__(
             self,
+
+            # NOTE: This will be replaced by an Address.
             ssh_address_or_host=None,
+
+            # NOTE: This will be replaced by an SSH_Config.
             ssh_config_file=SSH_CONFIG_FILE,
             ssh_host_key=None,
             ssh_password=None,
@@ -904,9 +911,12 @@ class SSHTunnelForwarder(object):
             ssh_proxy=None,
             ssh_proxy_enabled=True,
             ssh_username=None,
+
             local_bind_address=None,
             local_bind_addresses=None,
+
             logger=None,
+
             mute_exceptions=False,
             remote_bind_address=None,
             remote_bind_addresses=None,
