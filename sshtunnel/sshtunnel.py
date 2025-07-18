@@ -309,6 +309,7 @@ class HandlerSSHTunnelForwarderError(BaseSSHTunnelForwarderError):
 
 class _ForwardHandler(socketserver.BaseRequestHandler):
     """ Base handler for tunnel connections """
+
     remote_address = None
     ssh_transport = None
     logger = None
@@ -1646,6 +1647,7 @@ class SSHTunnelForwarder(object):
             self.stop(force=True)
 
 
+# TODO: Specific parameters instead of *args and **kwargs.
 def open_tunnel(*args, **kwargs):
     """
     Open an SSH Tunnel, wrapper for :class:`SSHTunnelForwarder`
