@@ -501,8 +501,9 @@ class _ThreadingStreamForwardServer(socketserver.ThreadingMixIn,
     daemon_threads = _DAEMON
 
 
-# This appears to be one of the primary classes. 
+# NOTE: This appears to be the primary class. 
 # This is huge, so I'll be re-writing it in the tunnel module.
+#
 class SSHTunnelForwarder(object):
     """
     **SSH tunnel class**
@@ -915,19 +916,29 @@ class SSHTunnelForwarder(object):
             ssh_proxy_enabled=True,
             ssh_username=None,
 
+            # NOTE: local_bind_address is now an Address in Tunnel. 
+            # Currently not implementing local_bind_addresses (plural) as I'm not convinced it's necessary.
             local_bind_address=None,
             local_bind_addresses=None,
 
+            # TODO: Implement in Tunnel.
             logger=None,
 
+            # NOTE: This appears to be deprecated even in this version of the library, so I won't be implementing it in Tunnel.
             mute_exceptions=False,
+
+            # NOTE: remote_bind_address is now an Address in Tunnel. 
+            # Currently not implementing remote_bind_addresses (plural) as I'm not convinced it's necessary.
             remote_bind_address=None,
             remote_bind_addresses=None,
+
+            # TODO: Implement these in Tunnel.
             set_keepalive=5.0,
             threaded=True,  # old version False
             compression=None,
             allow_agent=True,  # look for keys from an SSH agent
             host_pkey_directories=None,  # look for keys in ~/.ssh
+
             *args,
             **kwargs  # for backwards compatibility
     ):
@@ -1010,6 +1021,7 @@ class SSHTunnelForwarder(object):
         self.logger.debug('Concurrent connections allowed: {0}'
                           .format(self._threaded))
 
+    # TODO: This should be a method of SSH_Config class.
     @staticmethod
     def _read_ssh_config(ssh_host,
                          ssh_config_file,

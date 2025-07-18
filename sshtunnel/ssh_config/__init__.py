@@ -1,3 +1,6 @@
-from .ssh_config import SSH_Config
+from pathlib import Path
 
-__all__ = ["SSH_Config"]
+default_dir: Path = Path.home().joinpath(".ssh")
+default_file: Path = default_dir.joinpath("config")
+
+__all__ = ["default_dir", "default_file"]
