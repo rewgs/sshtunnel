@@ -24,7 +24,6 @@ from binascii import hexlify
 from select import select
 
 import paramiko
-from address import Address
 
 # NOTE: This block is for Python 2 support. Removing.
 #
@@ -261,10 +260,12 @@ def _check_paramiko_handlers(logger=None):
             paramiko_logger.addHandler(console_handler)
 
 
-def address_to_str(address):
-    if isinstance(address, tuple):
-        return '{0[0]}:{0[1]}'.format(address)
-    return str(address)
+# NOTE: This is now Address.as_string().
+#
+# def address_to_str(address):
+#     if isinstance(address, tuple):
+#         return '{0[0]}:{0[1]}'.format(address)
+#     return str(address)
 
 
 def _remove_none_values(dictionary):
