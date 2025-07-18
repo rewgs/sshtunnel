@@ -1,10 +1,7 @@
-- Convert `.rst` files to `.md`.
-- Lose the shebang
-- Lose the `-*- coding: utf-8 -*-` line
-- replace `os.path` with `pathlib`
-- requirements.txt or other dependency management
-- type annotations
-- lose the comment separators
-- move into sub-modules/separate files, etc.
-- is the `sys.version_info[0]` block really necessary?
 - PyPI denotes the highest version supported is v3.8. Modernize assuming that's the lowest supported instead.
+- Convert `.rst` files to `.md`.
+- Replace `os.path` with `pathlib`.
+- Requirements.txt or other dependency management.
+- Type annotations.
+- Lose the comment separators.
+- Move into sub-modules/separate files, etc.
