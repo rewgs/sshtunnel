@@ -1,7 +1,7 @@
 import paramiko
 
 from sshtunnel.host import Local, Remote
-from sshtunnel.ssh_config import default_dir, default_file
+from sshtunnel.ssh_config import default_file
 
 # from sshtunnel.ssh_config.ssh_config import SSH_Config
 
@@ -18,11 +18,11 @@ class Tunnel:
         remote_host: Remote,
         local_host: Local | None = None,
     ):
-        self.ssh_address: Remote = ssh_host
+        self.ssh_host: Remote = ssh_host
         # NOTE: Using paramiko.SSHConfig instead of what is basically a thin wrapper for it.
         # self.ssh_config: SSH_Config = ssh_config
-        self.remote_address: Remote = remote_host
-        self.local_address: Local = (
+        self.remote_host: Remote = remote_host
+        self.local_host: Local = (
             local_host if local_host is not None else Local(port=22)
         )
 
@@ -32,7 +32,9 @@ class Tunnel:
                 ssh_config: paramiko.SSHConfig = paramiko.SSHConfig().from_file(f)
 
             # Looks for information for the destination system
-            hostname_info: paramiko.SSHConfigDict = ssh_config.lookup(ssh_host.name)
+            hostname_info: paramiko.SSHConfigDict = ssh_config.lookup(
+                self.ssh_host.name
+            )
         # TODO:
         # - Offer to point to a different file?
         # - Attach to logger.warning like in original version?

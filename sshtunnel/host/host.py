@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from ipaddress import IPv4Address, IPv6Address, ip_address
+from typing import override
 
 
 class Host(ABC):
@@ -23,7 +24,7 @@ class Host(ABC):
             return False
         return True
 
-    def __init__(self, addr: str, port: int):
+    def __init__(self, addr: str, port: int = 22):
         if self._addr_is_name(addr):
             self._name: str = addr
 
@@ -60,3 +61,7 @@ class Host(ABC):
         if not prefer_name:
             return f"{self.ipv4_as_string}:{self.port}"
         return f"{self.name}:{self.port}"
+
+    @override
+    @abstractmethod
+    def __str__(self) -> str: ...

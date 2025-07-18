@@ -6,7 +6,9 @@ from .host import Host
 
 
 class Local(Host):
-    def __init__(self, port: int):
+    """The local host."""
+
+    def __init__(self, port: int = 22):
         super().__init__(addr="127.0.0.1", port=port)
 
     @property
@@ -28,7 +30,10 @@ class Local(Host):
     def name(self) -> str:
         if not hasattr(self, "_name"):
             name, _, _ = socket.gethostbyaddr(self.ipv4_as_string)
-            self._name: str = name
+            if name == "localhost":
+                self._name: str = socket.gethostname()
+            else:
+                self._name = name
         return self._name
 
     @ipv4.setter
@@ -38,3 +43,7 @@ class Local(Host):
     @ipv6.setter
     def ipv6(self, value: IPv6Address) -> None:
         self._ipv6 = value
+
+    @override
+    def __str__(self) -> str:
+        return f"Local object with value {self.name}:{self.port}"

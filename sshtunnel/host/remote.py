@@ -6,6 +6,8 @@ from .host import Host
 
 
 class Remote(Host):
+    """A remote host."""
+
     def __init__(self, addr: str, port: int):
         super().__init__(addr=addr, port=port)
 
@@ -62,3 +64,7 @@ class Remote(Host):
     @ipv6.setter
     def ipv6(self, value: IPv6Address) -> None:
         self._ipv6 = value
+
+    # TODO:
+    @override
+    def __str__(self) -> str: ...

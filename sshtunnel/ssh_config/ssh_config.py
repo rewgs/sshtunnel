@@ -1,13 +1,11 @@
-# TODO: Once Python 3.10 becomes minimum version, replace Optional with Unions.
-
-from pathlib import Path
-from typing import Optional
-
-import paramiko
-
 # NOTE: In retrospect, the original version is really just a thin wrapper for paramiko.SSHConfig.
 # We should probably just stick with paramiko.SSHConfig and not wrap it.
-#
+# This module will probably go away.
+
+# from pathlib import Path
+
+# import paramiko
+
 # class SSH_Config:
 #     def __init__(self):
 #         self.default_dir: Path = Path.home().joinpath(".ssh")
