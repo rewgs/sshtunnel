@@ -11,31 +11,41 @@ The connection(s) are closed when explicitly calling the
 
 """
 
-import os
-import random
-import string
-import sys
-import socket
+import argparse
 import getpass
 import logging
-import argparse
-import warnings
+import os
+import queue
+import random
+import socket
+import socketserver
+import string
+import sys
 import threading
-from select import select
+import warnings
 from binascii import hexlify
+from select import select
 
 import paramiko
 
-if sys.version_info[0] < 3:  # pragma: no cover
-    import Queue as queue
-    import SocketServer as socketserver
-    string_types = basestring,  # noqa
-    input_ = raw_input  # noqa
-else:  # pragma: no cover
-    import queue
-    import socketserver
-    string_types = str
-    input_ = input
+# NOTE: `sys.version_info[0]` is the major Python version.
+# This block supports Python 2. It can go.
+# if sys.version_info[0] < 3:  # pragma: no cover
+#     import Queue as queue
+#     import SocketServer as socketserver
+#     string_types = basestring,  # noqa
+#     input_ = raw_input  # noqa
+# else:  # pragma: no cover
+#     import queue
+#     import socketserver
+#     string_types = str
+#     input_ = input
+
+# NOTE: This was in the Python 2 check block above.
+# Moving it down here so it's not indented, but these can probably go...
+# seems like an old-school way of dealing with types?
+string_types = str
+input_ = input
 
 
 __version__ = '0.4.0'
