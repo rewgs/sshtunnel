@@ -7,4 +7,4 @@
 - lose the comment separators
 - move into sub-modules/separate files, etc.
 - is the `sys.version_info[0]` block really necessary?
-- I assume this was Python 3.6; modernize assuming that's the case.
+- PyPI denotes the highest version supported is v3.8. Modernize assuming that's the lowest supported instead.

@@ -11,32 +11,39 @@ The connection(s) are closed when explicitly calling the
 
 """
 
-import os
-import random
-import string
-import sys
-import socket
+import argparse
 import getpass
 import logging
-import argparse
-import warnings
+import os
+import queue
+import random
+import socket
+import socketserver
+import string
+import sys
 import threading
-from select import select
+import warnings
 from binascii import hexlify
+from select import select
 
 import paramiko
 
-if sys.version_info[0] < 3:  # pragma: no cover
-    import Queue as queue
-    import SocketServer as socketserver
-    string_types = basestring,  # noqa
-    input_ = raw_input  # noqa
-else:  # pragma: no cover
-    import queue
-    import socketserver
-    string_types = str
-    input_ = input
+# NOTE: This block is for Python 2 support. Removing.
+#
+# if sys.version_info[0] < 3:  # pragma: no cover
+#     import Queue as queue
+#     import SocketServer as socketserver
+#     string_types = basestring,  # noqa
+#     input_ = raw_input  # noqa
+# else:  # pragma: no cover
+#     import queue
+#     import socketserver
+#     string_types = str
+#     input_ = input
 
+# NOTE: This appear to be old-school type-hints. Keeping until I can replace them entirely.
+string_types = str
+input_ = input
 
 __version__ = '0.4.0'
 __author__ = 'pahaz'
@@ -76,84 +83,93 @@ SSH_CONFIG_FILE = os.path.join(DEFAULT_SSH_DIRECTORY, 'config')
 ########################
 
 
-def check_host(host):
-    assert isinstance(host, string_types), 'IP is not a string ({0})'.format(
-        type(host).__name__
-    )
+# NOTE: This has been replaced by the address module.
+#
+# def check_host(host):
+#     assert isinstance(host, string_types), 'IP is not a string ({0})'.format(
+#         type(host).__name__
+#     )
 
 
-def check_port(port):
-    assert isinstance(port, int), 'PORT is not a number'
-    assert port >= 0, 'PORT < 0 ({0})'.format(port)
+# NOTE: This has been replaced by the address module.
+#
+# def check_port(port):
+#     assert isinstance(port, int), 'PORT is not a number'
+#     assert port >= 0, 'PORT < 0 ({0})'.format(port)
 
 
-def check_address(address):
-    """
-    Check if the format of the address is correct
+# NOTE: This has been replaced by the address module.
+#
+# def check_address(address):
+#     """
+#     Check if the format of the address is correct
+#
+#     Arguments:
+#         address (tuple):
+#             (``str``, ``int``) representing an IP address and port,
+#             respectively
+#
+#             .. note::
+#                 alternatively a local ``address`` can be a ``str`` when working
+#                 with UNIX domain sockets, if supported by the platform
+#     Raises:
+#         ValueError:
+#             raised when address has an incorrect format
+#
+#     Example:
+#         >>> check_address(('127.0.0.1', 22))
+#     """
+#     if isinstance(address, tuple):
+#         check_host(address[0])
+#         check_port(address[1])
+#     elif isinstance(address, string_types):
+#         if os.name != 'posix':
+#             raise ValueError('Platform does not support UNIX domain sockets')
+#         if not (os.path.exists(address) or
+#                 os.access(os.path.dirname(address), os.W_OK)):
+#             raise ValueError('ADDRESS not a valid socket domain socket ({0})'
+#                              .format(address))
+#     else:
+#         raise ValueError('ADDRESS is not a tuple, string, or character buffer '
+#                          '({0})'.format(type(address).__name__))
 
-    Arguments:
-        address (tuple):
-            (``str``, ``int``) representing an IP address and port,
-            respectively
 
-            .. note::
-                alternatively a local ``address`` can be a ``str`` when working
-                with UNIX domain sockets, if supported by the platform
-    Raises:
-        ValueError:
-            raised when address has an incorrect format
-
-    Example:
-        >>> check_address(('127.0.0.1', 22))
-    """
-    if isinstance(address, tuple):
-        check_host(address[0])
-        check_port(address[1])
-    elif isinstance(address, string_types):
-        if os.name != 'posix':
-            raise ValueError('Platform does not support UNIX domain sockets')
-        if not (os.path.exists(address) or
-                os.access(os.path.dirname(address), os.W_OK)):
-            raise ValueError('ADDRESS not a valid socket domain socket ({0})'
-                             .format(address))
-    else:
-        raise ValueError('ADDRESS is not a tuple, string, or character buffer '
-                         '({0})'.format(type(address).__name__))
-
-
-def check_addresses(address_list, is_remote=False):
-    """
-    Check if the format of the addresses is correct
-
-    Arguments:
-        address_list (list[tuple]):
-            Sequence of (``str``, ``int``) pairs, each representing an IP
-            address and port respectively
-
-            .. note::
-                when supported by the platform, one or more of the elements in
-                the list can be of type ``str``, representing a valid UNIX
-                domain socket
-
-        is_remote (boolean):
-            Whether or not the address list
-    Raises:
-        AssertionError:
-            raised when ``address_list`` contains an invalid element
-        ValueError:
-            raised when any address in the list has an incorrect format
-
-    Example:
-
-        >>> check_addresses([('127.0.0.1', 22), ('127.0.0.1', 2222)])
-    """
-    assert all(isinstance(x, (tuple, string_types)) for x in address_list)
-    if (is_remote and any(isinstance(x, string_types) for x in address_list)):
-        raise AssertionError('UNIX domain sockets not allowed for remote'
-                             'addresses')
-
-    for address in address_list:
-        check_address(address)
+# NOTE: Like most of the other code moved to address.py, this is 99% type-checking.
+# Probably won't need to re-implement this.
+#
+# def check_addresses(address_list, is_remote=False):
+#     """
+#     Check if the format of the addresses is correct
+#
+#     Arguments:
+#         address_list (list[tuple]):
+#             Sequence of (``str``, ``int``) pairs, each representing an IP
+#             address and port respectively
+#
+#             .. note::
+#                 when supported by the platform, one or more of the elements in
+#                 the list can be of type ``str``, representing a valid UNIX
+#                 domain socket
+#
+#         is_remote (boolean):
+#             Whether or not the address list
+#     Raises:
+#         AssertionError:
+#             raised when ``address_list`` contains an invalid element
+#         ValueError:
+#             raised when any address in the list has an incorrect format
+#
+#     Example:
+#
+#         >>> check_addresses([('127.0.0.1', 22), ('127.0.0.1', 2222)])
+#     """
+#     assert all(isinstance(x, (tuple, string_types)) for x in address_list)
+#     if (is_remote and any(isinstance(x, string_types) for x in address_list)):
+#         raise AssertionError('UNIX domain sockets not allowed for remote'
+#                              'addresses')
+#
+#     for address in address_list:
+#         check_address(address)
 
 
 def create_logger(logger=None,
