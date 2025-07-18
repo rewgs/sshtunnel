@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 *sshtunnel* - Initiate SSH tunnels via a remote gateway.
 
