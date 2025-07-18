@@ -42,8 +42,9 @@ import paramiko
 string_types = str
 input_ = input
 
-__version__ = '0.4.0'
-__author__ = 'pahaz'
+# NOTE: Moved to __init__.py
+# __version__ = '0.4.0'
+# __author__ = 'pahaz'
 
 
 #: Timeout (seconds) for transport socket (``socket.settimeout``)
@@ -356,6 +357,7 @@ class _ForwardHandler(socketserver.BaseRequestHandler):
         uid = generate_random_string(5)
         self.info = '#{0} <-- {1}'.format(uid, self.client_address or
                                           self.server.local_address)
+
         src_address = self.request.getpeername()
         if not isinstance(src_address, tuple):
             src_address = ('dummy', 12345)

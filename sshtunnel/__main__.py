@@ -1,5 +1,7 @@
 import argparse
 
+from sshtunnel import __version__
+
 
 # FIXME: This was simply copied from sshtunnel.py. This does not work at the moment.
 def _bindlist(input_str):
