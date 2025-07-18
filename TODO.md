@@ -1,0 +1,10 @@
+- Convert `.rst` files to `.md`.
+- Lose the shebang
+- Lose the `-*- coding: utf-8 -*-` line
+- replace `os.path` with `pathlib`
+- requirements.txt or other dependency management
+- type annotations
+- lose the comment separators
+- move into sub-modules/separate files, etc.
+- is the `sys.version_info[0]` block really necessary?
+- I assume this was Python 3.6; modernize assuming that's the case.
