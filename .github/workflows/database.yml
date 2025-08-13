@@ -45,10 +45,10 @@ jobs:
           # cd e2e_tests && docker-compose exec ssh cat /config/logs/openssh/current; cd ..
           # docker exec openssh-server tail -f /config/logs/openssh/current
 
-      - name: Run db tests ${{ matrix.python }}
+      - name: Run db old_tests ${{ matrix.python }}
         run: ${{ matrix.python }} e2e_tests/run_docker_e2e_db_tests.py
 
-      - name: Run hungs tests ${{ matrix.python }}
+      - name: Run hungs old_tests ${{ matrix.python }}
         run: timeout 10s ${{ matrix.python }} e2e_tests/run_docker_e2e_hangs_tests.py
 
       - name: Collect openssh-server logs from docker container

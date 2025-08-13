@@ -38,7 +38,7 @@ import paramiko
 #     string_types = str
 #     input_ = input
 
-# NOTE: This appear to be old-school type-hints. Keeping until I can replace them entirely.
+# NOTE: These appear to be old-school type-hints. Keeping until I can replace them entirely.
 string_types = str
 input_ = input
 
@@ -66,8 +66,7 @@ DEFAULT_LOGLEVEL = logging.ERROR  #: default level if no logger passed (ERROR)
 TRACE_LEVEL = 1
 logging.addLevelName(TRACE_LEVEL, 'TRACE')
 
-_StreamServer = socketserver.UnixStreamServer if os.name == 'posix' \
-    else socketserver.TCPServer
+_StreamServer = socketserver.UnixStreamServer if os.name == 'posix' else socketserver.TCPServer
 
 # NOTE: These are now fields in the SSH_Config class.
 #

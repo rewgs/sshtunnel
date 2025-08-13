@@ -55,5 +55,5 @@ build: off
 
 test_script:
   - python setup.py install
-  - py.test --showlocals --durations=10 -n4 tests
+  - py.test --showlocals --durations=10 -n4 old_tests
 

@@ -19,9 +19,9 @@ ppa = 'https://pypi.python.org/packages/source/s/{0}/{0}-'.format(name)
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
-with open(path.join(here, 'docs.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'old_docs.rst'), encoding='utf-8') as f:
     documentation = f.read()
-with open(path.join(here, 'changelog.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'old_changelog.rst'), encoding='utf-8') as f:
     changelog = f.read()
 
 with open(path.join(here, name + '.py'), encoding='utf-8') as f:
@@ -86,7 +86,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    # packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    # packages=find_packages(exclude=['contrib', 'old_docs', 'old_tests']),
 
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
@@ -122,7 +122,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'tests': ['testrsa.key'],
+        'old_tests': ['testrsa.key'],
     },
 
     # To provide executable scripts, use entry points in preference to the

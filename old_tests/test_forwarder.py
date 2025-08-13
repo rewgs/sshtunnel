@@ -66,7 +66,7 @@ def capture_stdout_stderr():
         out[1] = out[1].getvalue()
 
 
-# Ensure that ``ssh_config_file is None`` during tests, exceptions are not
+# Ensure that ``ssh_config_file is None`` during old_tests, exceptions are not
 # raised and pkey loading from an SSH agent is disabled
 open_tunnel = partial(
     sshtunnel.open_tunnel,
@@ -134,7 +134,7 @@ class MockLoggingHandler(logging.Handler, object):
 
 class NullServer(paramiko.ServerInterface):
     def __init__(self, *args, **kwargs):
-        # Allow tests to enable/disable specific key types
+        # Allow old_tests to enable/disable specific key types
         self.__allowed_keys = kwargs.pop('allowed_keys', [])
         self.log = kwargs.pop('log', sshtunnel.create_logger(loglevel='DEBUG'))
         super(NullServer, self).__init__(*args, **kwargs)
@@ -1192,7 +1192,7 @@ class SSHClientTest(unittest.TestCase):
 
 
 class AuxiliaryTest(unittest.TestCase):
-    """ Set of tests that do not need the mock SSH server or logger """
+    """ Set of old_tests that do not need the mock SSH server or logger """
 
     def test_parse_arguments_short(self):
         """ Test CLI argument parsing with short parameter names """
