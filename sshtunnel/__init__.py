@@ -1,8 +1,13 @@
 # NOTE:
 # At the moment, this is only imported for quick and easy testing via the Python REPL.
 # Address likely will not remain public once finished.
-from .address import Host
+# from .address import Host
 
 __all__ = ["Host"]
 __version__ = "0.4.0"
+
+# original author
 __author__ = "pahaz"
+
+# forked and modified by
+__maintainer__ = "rewgs"
